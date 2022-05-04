@@ -1,123 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
-
+import 'package:covid19/album2_model.dart';
+import 'package:covid19/album_model.dart';
+import 'package:covid19/controllers/fetch_album1.dart';
+import 'package:covid19/controllers/fetch_album2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-
-Future<Album> fetchAlbum() async {
-  final response = await http.get('https://disease.sh/v3/covid-19/all');
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Album.fromJson(json.decode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class Album {
-  final int id;
-  final int cases;
-  final int todayCases;
-  final int deaths;
-  final int todayDeaths;
-  final int recovered;
-  final int todayRecovered;
-  final int active;
-  final int population;
-
-  Album(
-      {this.id,
-      this.cases,
-      this.todayCases,
-      this.deaths,
-      this.todayDeaths,
-      this.recovered,
-      this.todayRecovered,
-      this.active,
-      this.population});
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      id: json['id'],
-      cases: json['cases'],
-      todayCases: json['todayCases'],
-      deaths: json['deaths'],
-      todayDeaths: json['todayDeaths'],
-      recovered: json['recovered'],
-      todayRecovered: json['todayRecovered'],
-      active: json['active'],
-      population: json['population'],
-    );
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-Future<Album2> fetchAlbum2(selectedCountry) async {
-  final responses = await http
-      .get('https://disease.sh/v3/covid-19/countries/${selectedCountry}');
-
-  if (responses.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Album2.fromJson(json.decode(responses.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class Album2 {
-  final int id;
-  final int cases;
-  final int todayCases;
-  final int deaths;
-  final int todayDeaths;
-  final int recovered;
-  final int todayRecovered;
-  final int active;
-  final int population;
-  final String country;
-  final String flag;
-
-  Album2(
-      {this.id,
-      this.cases,
-      this.todayCases,
-      this.deaths,
-      this.todayDeaths,
-      this.recovered,
-      this.todayRecovered,
-      this.active,
-      this.population,
-      this.country,
-      this.flag});
-
-  factory Album2.fromJson(Map<String, dynamic> json) {
-    return Album2(
-      id: json['id'],
-      cases: json['cases'],
-      todayCases: json['todayCases'],
-      deaths: json['deaths'],
-      todayDeaths: json['todayDeaths'],
-      recovered: json['recovered'],
-      todayRecovered: json['todayRecovered'],
-      active: json['active'],
-      population: json['population'],
-      country: json['country'],
-      flag: json['countryInfo']['flag'],
-    );
-  }
-}
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -440,6 +330,7 @@ class _MyAppState extends State<MyApp> {
                                                     drate.toStringAsFixed(2);
                                               });
                                             }
+                                            return;
                                           });
                                     });
                                   },
@@ -498,7 +389,6 @@ class _MyAppState extends State<MyApp> {
                 controller: searchTC,
                 textCapitalization: TextCapitalization.characters,
                 enableSuggestions: true,
-//              autovalidate: true,
                 validator: (String val) {
                   if (val.isEmpty) return ("Enter a Country to continue.");
                 },
@@ -569,11 +459,7 @@ class _MyAppState extends State<MyApp> {
 
   ImageProvider img2() {
     var assetImage = AssetImage("assets/icon/global.png");
-    var image = Image(
-      image: assetImage,
-      height: 105,
-      width: 105,
-    );
+
     return assetImage;
   }
 

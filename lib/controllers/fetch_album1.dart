@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:covid19/album_model.dart';
+import 'package:covid19/models/album_model.dart';
 import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum() async {

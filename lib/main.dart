@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:covid19/album2_model.dart';
-import 'package:covid19/album_model.dart';
+import 'package:covid19/models/album2_model.dart';
 import 'package:covid19/controllers/fetch_album1.dart';
 import 'package:covid19/controllers/fetch_album2.dart';
+import 'package:covid19/models/album_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

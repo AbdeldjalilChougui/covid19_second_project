@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:covid19/album2_model.dart';
+import 'package:covid19/models/album2_model.dart';
 import 'package:http/http.dart' as http;
 
 Future<Album2> fetchAlbum2(selectedCountry) async {
